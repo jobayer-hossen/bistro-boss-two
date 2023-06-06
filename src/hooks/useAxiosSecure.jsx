@@ -10,7 +10,7 @@ const useAxiosSecure = () => {
   const navigate = useNavigate(); 
 
   const axiosSecure = axios.create({
-    baseURL: 'http://localhost:7000', 
+    baseURL: 'https://bistro-boss-server-efilhj8gb-emonhasan007.vercel.app', 
   });
 
   useEffect(() => {
@@ -43,7 +43,7 @@ const useAxiosSecure = () => {
 
 
   // const axiosSecure = axios.create({
-  //   baseURL: 'http://localhost:7000', 
+  //   baseURL: 'https://bistro-boss-server-efilhj8gb-emonhasan007.vercel.app', 
   // });
 
   // useEffect(() => {

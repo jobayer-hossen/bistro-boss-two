@@ -12,7 +12,7 @@ const AllUsers = () => {
         return res.data;
     })
     const handleAdmin = (user)=>{
-        fetch(`http://localhost:7000/users/admin/${user._id}`,{
+        fetch(`https://bistro-boss-server-efilhj8gb-emonhasan007.vercel.app/users/admin/${user._id}`,{
             method:'PATCH',
 
         })

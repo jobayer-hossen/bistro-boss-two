@@ -15,7 +15,7 @@ const SocialLogin = () => {
             console.log(loggedUser)
 
             const saveUser = {name: loggedUser.displayName , email:loggedUser.email }
-            fetch('http://localhost:7000/users',{
+            fetch('https://bistro-boss-server-efilhj8gb-emonhasan007.vercel.app/users',{
                 method:'POST',
                 headers:{
                     'content-type':'application/json'

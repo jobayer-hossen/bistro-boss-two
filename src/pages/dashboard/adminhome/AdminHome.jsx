@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { AuthContext } from '../../../provider/AuthProvider';
 import { useQuery } from '@tanstack/react-query';
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
+import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, PieChart, Pie, ResponsiveContainer, Legend } from 'recharts';
 
 const AdminHome = () => {
     const { user } = useContext(AuthContext);
@@ -11,9 +12,45 @@ const AdminHome = () => {
         queryFn: async () => {
             const res = await axiosSecure('/admin-stats');
             return res.data;
+        } 
+    });
+
+    const {data:chartData = []} = useQuery({
+        queryKey: ['chart-data'],
+        queryFn: async ()=>{
+            const res = await axiosSecure('/order-stats');
+            return res.data;
         }
-        
     })
+
+    const colors = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', 'red', 'pink'];
+
+    const getPath = (x, y, width, height) => {
+        return `M${x},${y + height}C${x + width / 3},${y + height} ${x + width / 2},${y + height / 3}
+    ${x + width / 2}, ${y}
+    C${x + width / 2},${y + height / 3} ${x + (2 * width) / 3},${y + height} ${x + width}, ${y + height}
+    Z`;
+    };
+
+    const TriangleBar = (props) => {
+        const { fill, x, y, width, height } = props;
+
+        return <path d={getPath(x, y, width, height)} stroke="none" fill={fill} />;
+    };
+
+    const RADIAN = Math.PI / 180;
+    const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent }) => {
+        const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
+        const x = cx + radius * Math.cos(-midAngle * RADIAN);
+        const y = cy + radius * Math.sin(-midAngle * RADIAN);
+
+        return (
+            <text x={x} y={y} fill="white" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central">
+                {`${(percent * 100).toFixed(0)}%`}
+            </text>
+        );
+    };
+
     return (
         <div className="w-full m-4">
             <h2 className="text-3xl">Hi, {user.displayName}</h2>
@@ -56,7 +93,7 @@ const AdminHome = () => {
                 </div>
 
             </div>
-            {/* <div className="flex">
+            <div className="flex">
                 <div className="w-1/2">
                     <BarChart
                         width={500}
@@ -100,7 +137,7 @@ const AdminHome = () => {
                         </PieChart>
                     </ResponsiveContainer>
                 </div>
-            </div> */}
+            </div>
         </div>
     );
 };
